@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,3 +18,9 @@ Route::middleware('auth')->group(function() {
     Route::view('/', 'welcome')->name('home');
 });
 
+
+Route::controller(GoogleController::class)->prefix('auth/google')
+    ->group(function () {
+        Route::get('redirect', 'page');
+        Route::get('callback', 'token');
+    });

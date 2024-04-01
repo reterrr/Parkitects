@@ -13,17 +13,14 @@ abstract class FolderRoute
     {
         $route = static::options();
         $route->group($file->getRealPath());
-
-        //if ($this instanceof AuthFolderRoute)
-          //  dd($route);
     }
 
     public final function registerRoutes(): void
     {
         $files = collect(File::files(base_path($this->path())));
-        $folders = collect(File::allFiles(base_path($this->path())))->diff($files);
+        //$folders = collect(File::allFiles(base_path($this->path())))->diff($files);
 
-        $folders->each(fn(SplFileInfo $file) => self::register($file));
+        //$folders->each(fn(SplFileInfo $file) => self::register($file));
         $files->each(fn(SplFileInfo $file) => self::register($file));
     }
 
