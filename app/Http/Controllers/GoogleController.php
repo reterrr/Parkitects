@@ -18,13 +18,13 @@ class GoogleController extends Controller
 
         $user = Socialite::driver('google')->userFromToken($response['access_token']);
 
-        User::query()->firstOrCreate(
+        $newUser = User::query()->firstOrCreate(
             ['email' => $user['email']
             ],[
             'name' => $user['name'],
         ]);
 
-        return TokenResource::make($user->createToken('api')->plainTextToken);
+        return TokenResource::make($newUser->createToken('api')->plainTextToken);
     }
 
     public function token(Request $request): never
