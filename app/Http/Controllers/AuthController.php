@@ -8,7 +8,6 @@ use App\Http\Resources\TokenResource;
 use App\Services\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 
 class AuthController extends Controller
@@ -18,14 +17,14 @@ class AuthController extends Controller
         return TokenResource::make($service->tokenOrFail($request));
     }
 
-    public function register(RegisterRequest $request, AuthService $service): Response
+    public function register(RegisterRequest $request, AuthService $service): void
     {
-        return $service->register($request->validated());
+        $service->register($request->validated());
     }
 
-    public function logout(AuthService $service, Request $request): bool
+    public function logout(AuthService $service, Request $request): void
     {
-        return $service->logout($request->user());
+        $service->logout($request->user());
     }
 
     public function forgotPassword(AuthService $service, Request $request): JsonResponse
