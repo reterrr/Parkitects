@@ -8,25 +8,30 @@ use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 
 class AuthService
 {
-    public function register(array $data): Response
+    public function register(array $data): void
     {
-        if (User::query()->where('email', $data['email'])->exists())
-            return response('User already exits', 409);
+        $user = User::withTrashed()->where('email', $data['email'])->first();
+
+        if ($user->trashed()) {
+            $user->restore();
+
+            return;
+        }
+
+        if ($user->exists())
+            throw new \Exception('User already exists', 409);
 
         User::query()->create([
             'email' => $data['email'],
             'name' => $data['name'],
             'password' => Hash::make($data['password'])
         ]);
-
-        return response('User successfully created!');
     }
 
     public function tokenOrFail(LoginRequest $request)
@@ -37,9 +42,9 @@ class AuthService
         return $request->user()->createToken('access_token')->plainTextToken;
     }
 
-    public function logout(User $user): bool
+    public function logout(User $user): void
     {
-        return $user->currentAccessToken()->delete();
+        $user->currentAccessToken()->delete();
     }
 
     public function forgotPassword(Request $request)

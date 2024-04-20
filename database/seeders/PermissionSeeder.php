@@ -51,5 +51,7 @@ class PermissionSeeder extends Seeder
         $deleteUser->name = 'delete user';
         $deleteUser->slug = 'users.delete';
         $deleteUser->save();
+
+
     }
 }
