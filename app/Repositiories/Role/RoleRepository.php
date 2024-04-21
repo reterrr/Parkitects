@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Repositiories\Role;
 
 use App\Models\Role;
 use Illuminate\Database\Eloquent\Builder;

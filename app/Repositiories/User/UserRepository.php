@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Repositiories\User;
 
 use App\Exceptions\SuperAdminDelete;
 use App\Models\User;

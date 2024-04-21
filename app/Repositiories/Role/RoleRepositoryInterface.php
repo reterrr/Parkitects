@@ -1,6 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Repositiories\Role;
+
+use App\Repositiories\RepositoryInterface;
 
 interface RoleRepositoryInterface extends RepositoryInterface
 {

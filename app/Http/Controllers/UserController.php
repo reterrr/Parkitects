@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeleteUserRequest;
+use App\Http\Requests\GetUsersRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function all(UserService $service, )
+    public function all(UserService $service, GetUsersRequest $request)
     {
         return $service->all();
     }

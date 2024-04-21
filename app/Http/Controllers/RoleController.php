@@ -7,7 +7,6 @@ use App\Http\Requests\DeleteRoleRequest;
 use App\Services\RoleService;
 use Illuminate\Http\Request;
 
-
 class RoleController extends Controller
 {
     public function all(RoleService $service)

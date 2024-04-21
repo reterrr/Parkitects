@@ -52,6 +52,9 @@ class PermissionSeeder extends Seeder
         $deleteUser->slug = 'users.delete';
         $deleteUser->save();
 
-
+        $getUser = new Permission();
+        $getUser->name = 'get user';
+        $getUser->slug = 'users.get';
+        $getUser->save();
     }
 }
