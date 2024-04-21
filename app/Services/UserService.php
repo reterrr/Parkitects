@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\UserRepository;
+use App\Repositiories\User\UserRepository;
 use Illuminate\Support\Collection;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UserService
 {
@@ -20,7 +21,7 @@ class UserService
     public function update(array $data, int $id): void
     {
         if (!$this->userRepository->userExists($id))
-            throw new \Exception('No such user', 409);
+            throw new HttpException(409, 'No such user');
 
         $this->userRepository->update($data, $id);
     }
@@ -28,7 +29,7 @@ class UserService
     public function delete(int $id): void
     {
         if (!$this->userRepository->userExists($id))
-            throw new \Exception('No such user', 409);
+            throw new HttpException(409, 'No such user');
 
         $this->userRepository->delete($id);
     }
