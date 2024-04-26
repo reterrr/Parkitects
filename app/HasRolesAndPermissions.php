@@ -21,13 +21,7 @@ trait HasRolesAndPermissions
 
     public function hasRole(string... $roles): bool
     {
-        foreach($roles as $role)
-        {
-            if ($this->roles->contains('slug', $role))
-                return true;
-        }
-
-        return false;
+        return $this->roles()->whereIn('slug', $roles)->exists();
     }
 
     public function hasPermission(string $permission): bool

@@ -2,7 +2,6 @@
 
 namespace App;
 
-use App\Attributes\AttributableEnum;
 use App\Attributes\RolePriority;
 
 enum RoleType: string

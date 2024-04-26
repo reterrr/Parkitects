@@ -36,4 +36,9 @@ class Role extends Model
     protected $casts = [
         'slug' => RoleType::class
     ];
+
+    public function priority()
+    {
+        return $this->slug->rolePriority();
+    }
 }
