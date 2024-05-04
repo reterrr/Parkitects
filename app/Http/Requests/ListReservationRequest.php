@@ -4,15 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteRoleRequest extends FormRequest
+class ListReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionTo('roles.delete') &&
-            $this->user()->mainPriority() < $this->role->priority();
+        return false;
     }
 
     /**

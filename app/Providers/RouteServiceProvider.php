@@ -2,6 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\ParkingPlace;
+use App\Models\Reservation;
+use App\Models\Role;
+use App\Models\User;
 use App\RouteLoader;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -31,6 +35,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             $this->registerRoutes();
+            $this->registerBindings();
 
             Route::middleware('api')
                 ->prefix('api')
@@ -48,4 +53,11 @@ class RouteServiceProvider extends ServiceProvider
         $loader->register();
     }
 
+    private function registerBindings(): void
+    {
+        Route::bind('user', fn ($id) => User::query()->find($id) ?? $this->resourceNotFoundException($id));
+        Route::bind('reservation', fn ($id) => Reservation::query()->find($id) ?? $this->resourceNotFoundException($id));
+        Route::bind('parkingPlace', fn ($id) => ParkingPlace::query()->find($id) ?? $this->resourceNotFoundException($id));
+        Route::bind('role', fn ($id) => Role::query()->find($id) ?? $this->resourceNotFound($id));
+    }
 }

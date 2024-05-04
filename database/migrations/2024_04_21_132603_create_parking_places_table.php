@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('parking_places', function (Blueprint $table) {
             $table->id();
 
-
             $table->timestamps();
         });
     }

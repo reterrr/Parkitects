@@ -2,11 +2,28 @@
 
 namespace App\Models;
 
+use App\ReservationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $casts = [
+        'status' => ReservationStatus::class
+    ];
+
+    public function parkingPlace(): HasOne
+    {
+        return $this->hasOne(ParkingPlace::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 }

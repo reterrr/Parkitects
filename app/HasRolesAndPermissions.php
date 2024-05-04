@@ -31,7 +31,7 @@ trait HasRolesAndPermissions
 
     public function hasPermissionThroughRole(string $permission): bool
     {
-        return $this->roles->contains(function (Role $role) use($permission) {
+        return $this->roles->contains(function (Role $role) use ($permission) {
             return $role->hasPermission($permission);
         });
     }
