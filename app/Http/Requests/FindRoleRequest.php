@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRoleRequest extends FormRequest
+class FindRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionTo('roles.create');
+        return $this->user()->hasPersmissionTo('roles.find');
     }
 
     /**
@@ -22,10 +22,7 @@ class CreateRoleRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string'],
-            'slug' => ['required', 'string'],
-            'permissions' => ['array', 'nullable'],
-            'permissions.*' => ['string', 'nullable', 'exists:permissions,slug'],
+            //
         ];
     }
 }

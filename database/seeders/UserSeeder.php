@@ -16,16 +16,24 @@ class UserSeeder extends Seeder
     {
         $superAdmin = new User();
         $superAdmin->name = 'Super Admin';
-        $superAdmin->email = 'sharonovnikola1@gmail.com';
+        $superAdmin->email = 'superadmin@gmail.com';
         $superAdmin->password  = Hash::make('123');
         $superAdmin->save();
         $superAdmin->roles()->attach(Role::query()->find(1));
 
+        //TODO admin and user can be deleted later
         $admin = new User();
         $admin->name = 'admin';
         $admin->email = 'admin@gmail.com';
         $admin->password  = Hash::make('123');
         $admin->save();
         $admin->roles()->attach(Role::query()->find(2));
+
+        $user = new User();
+        $user->name = 'user';
+        $user->email = 'user@gmail.com';
+        $user->password = Hash::make('123');
+        $user->save();
+        $user->roles()->attach(Role::query()->find(3));
     }
 }

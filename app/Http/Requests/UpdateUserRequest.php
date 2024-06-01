@@ -11,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->id == $this->user;
+        return $this->user()->id === $this->user->id;
     }
 
     /**

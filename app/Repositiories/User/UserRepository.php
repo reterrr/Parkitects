@@ -2,18 +2,34 @@
 
 namespace App\Repositiories\User;
 
+use App\Exceptions\RegisterFailedException;
 use App\Exceptions\SuperAdminDelete;
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Collection;
+use App\RoleType;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
+use Spatie\QueryBuilder\AllowedFilter;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class UserRepository implements UserRepositoryInterface
 {
-    public function all(): Collection
+    public function list()
     {
-        return User::query()->get();
+        return QueryBuilder::for(User::class)
+            ->allowedFilters([
+                AllowedFilter::callback('roles', function (Builder $query, array $value): Builder {
+                    return $query->join('role_user', 'id', '=', 'user_id')
+                        ->whereIn('roles_id', $value);
+                }),
+                AllowedFilter::callback('search', function (Builder $query, string $value) : Builder {
+                    return $query->where('name', 'like', "%$value%")
+                        ->orWhere('email', 'like', "%$value%");
+                })
+            ]);
     }
 
-    public function update(array $data, int $id)
+    public function update(int $id, array $data)
     {
         User::query()->where('id', $id)->update($data);
     }
@@ -33,8 +49,25 @@ class UserRepository implements UserRepositoryInterface
         return User::query()->where('id', $id)->first();
     }
 
-    public function userExists(int $id): bool
+    public function create(array $data)
     {
-        return User::query()->where('id', $id)->exists();
+        if (User::query()->where('email', $data['email'])->exists())
+            throw new RegisterFailedException();
+
+        $trashed = User::onlyTrashed()->where('email', $data['email'])->first();
+
+        if ($trashed != null) {
+            $trashed->restore();
+
+            return;
+        }
+
+        $user = User::query()->create([
+            'email' => $data['email'],
+            'name' => $data['name'],
+            'password' => Hash::make($data['password'])
+        ]);
+
+        $user->roles()->attach(Role::query()->where('slug', RoleType::USER->value)->first());
     }
 }

@@ -2,19 +2,17 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ValidFormatReservationRule;
-use App\Rules\ValidPeriodReservationRule;
-use App\Rules\ValidStartReservationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ListReservationRequest extends FormRequest
+class CancelReservationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return $this->user()->id == $this->id ||
+            $this->user()->hasPermission('reservations.cancel');
     }
 
     /**
@@ -25,8 +23,7 @@ class ListReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filter.start_time' => ['sometimes', 'date_format:Y-m-d H:i'],
-            'filter.end_time' => ['required_with:start_time', 'date_format:Y-m-d H:i', 'after:start_time']
+            //
         ];
     }
 }

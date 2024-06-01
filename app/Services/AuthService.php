@@ -3,11 +3,9 @@
 namespace App\Services;
 
 use App\Exceptions\LoginFailedException;
-use App\Exceptions\RegisterFailedException;
 use App\Http\Requests\LoginRequest;
-use App\Models\Role;
 use App\Models\User;
-use App\RoleType;
+use App\Repositiories\User\UserRepositoryInterface;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -17,25 +15,14 @@ use Illuminate\Support\Str;
 
 class AuthService
 {
+    public function __construct(
+        private UserRepositoryInterface $repository
+    ) {
+    }
+
     public function register(array $data): void
     {
-        if (User::query()->where('email', $data['email'])->exists())
-            throw new RegisterFailedException();
-
-        $trashed = User::onlyTrashed()->where('email', $data['email'])->first();
-        if ($trashed != null) {
-            $trashed->restore();
-
-            return;
-        }
-
-        $user = User::query()->create([
-            'email' => $data['email'],
-            'name' => $data['name'],
-            'password' => Hash::make($data['password'])
-        ]);
-
-        $user->roles()->attach(Role::query()->where('slug', RoleType::USER->value)->first());
+        $this->repository->create($data);
     }
 
     public function tokenOrFail(LoginRequest $request)

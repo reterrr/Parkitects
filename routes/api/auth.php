@@ -10,7 +10,6 @@ Route::controller(AuthController::class)->prefix('auth')->group(function () {
         Route::post('login', 'login')->name('auth.login');
         Route::post('register', 'register')->name('auth.register');
         Route::post('forgot-password', 'forgotPassword');
-        //Route::get('aaa', function () { return Route::getCurrentRoute()->gatherMiddleware(); });
         Route::post('reset-password', 'resetPassword')->name('password.update');
 
     });

@@ -12,6 +12,19 @@ class Role extends Model
 {
     use HasFactory, SoftDeletes, HasPermissions;
 
+    protected $fillable = [
+      'name',
+      'slug'
+    ];
+
+    protected $hidden = [
+      'slug'
+    ];
+
+    protected $casts = [
+        'slug' => RoleType::class
+    ];
+
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class);
@@ -21,21 +34,6 @@ class Role extends Model
     {
         return $this->belongsToMany(Permission::class);
     }
-
-    protected $fillable = [
-      'name',
-      'slug',
-      'permissions'
-    ];
-
-    protected $hidden = [
-      'slug',
-      'permissions'
-    ];
-
-    protected $casts = [
-        'slug' => RoleType::class
-    ];
 
     public function priority()
     {

@@ -27,6 +27,11 @@ class PermissionSeeder extends Seeder
         $updateRole->slug = 'roles.update';
         $updateRole->save();
 
+        $findRole = new Permission();
+        $findRole->name = 'find role';
+        $findRole->slug = 'roles.find';
+        $findRole->save();
+
         $givePermission = new Permission();
         $givePermission->name = 'give permission';
         $givePermission->slug = 'permissions.give';
@@ -53,8 +58,13 @@ class PermissionSeeder extends Seeder
         $deleteUser->save();
 
         $getUser = new Permission();
-        $getUser->name = 'get user';
+        $getUser->name = 'get users';
         $getUser->slug = 'users.get';
         $getUser->save();
+
+        $findUser = new Permission();
+        $findUser->name = 'find user';
+        $findUser->slug = 'users.find';
+        $findUser->save();
     }
 }

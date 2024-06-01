@@ -13,22 +13,23 @@ class RoleService
     ) {
     }
 
-    public function create(array $data)
-    {
-        if (Role::query()->where('slug', $data['slug'])->exists())
-            throw new HttpException(409, 'Already exists');
-
-        $this->roleRepository->create($data);
-    }
+    //TODO i dont think that making a new role is a good idea
+//    public function create(array $data)
+//    {
+//        if (Role::query()->where('slug', $data['slug'])->exists())
+//            throw new HttpException(409, 'Already exists');
+//
+//        $this->roleRepository->create($data);
+//    }
 
     public function find(int $id)
     {
         return $this->roleRepository->find($id);
     }
 
-    public function all()
+    public function list()
     {
-        return $this->roleRepository->all();
+        return $this->roleRepository->list();
     }
 
     public function delete(int $id)

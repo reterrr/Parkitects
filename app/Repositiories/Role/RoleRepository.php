@@ -10,7 +10,7 @@ use Mockery\Exception;
 
 class RoleRepository implements RoleRepositoryInterface
 {
-    public function all(): Collection|array
+    public function list(): Collection|array
     {
         return Role::query()->get();
     }
