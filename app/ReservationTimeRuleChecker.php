@@ -3,25 +3,25 @@
 namespace App;
 
 
-class ReservationRuleChecker
+abstract class ReservationTimeRuleChecker
 {
-    private array $data;
+    protected array $data = [];
 
-    private array $rules;
+    protected array $rules = [];
 
-    public static function make(): self
+    public static function make(): static
     {
-        return new self();
+        return new static();
     }
 
-    public function forData(array $data): self
+    public function forData(array $data): static
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function forRules(array $rules): self
+    public function forRules(array $rules): static
     {
         $this->rules = $rules;
 

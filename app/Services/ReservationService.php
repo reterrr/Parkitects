@@ -2,14 +2,15 @@
 
 namespace App\Services;
 
+use App\CreateReservationTimeRuleChecker;
 use App\MinReservationPeriod;
 use App\Models\Reservation;
 use App\Models\User;
 use App\NotConflictingReservationRule;
 use App\NotConflictingUpdateReservationRule;
 use App\Repositiories\Reservation\ReservationRepositoryInterface;
-use App\ReservationRuleChecker;
 use App\ReservationStatus;
+use App\UpdateReservationTimeRuleChecker;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class ReservationService
@@ -38,7 +39,7 @@ class ReservationService
 
     public function create(User $user, array $data): void
     {
-        ReservationRuleChecker::make()
+        CreateReservationTimeRuleChecker::make()
             ->forRules($this->makeReservationRules())
             ->forData($data)
             ->validate();
@@ -68,16 +69,7 @@ class ReservationService
 
     public function update(Reservation $reservation, array $data): void
     {
-        if (isset($data['start_time']) && isset($data['end_time'])) {
-            $data['id'] = $reservation->id;
-            ReservationRuleChecker::make()
-                ->forRules($this->updateReservationRules())
-                ->forData($data)
-                ->validate();
-        }
-
-        ReservationRuleChecker::make()
-            ->isset()
+        UpdateReservationTimeRuleChecker::make()
             ->forRules($this->updateReservationRules())
             ->forData($data)
             ->validate();

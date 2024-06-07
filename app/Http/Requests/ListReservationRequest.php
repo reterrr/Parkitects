@@ -2,9 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\ValidFormatReservationRule;
-use App\Rules\ValidPeriodReservationRule;
-use App\Rules\ValidStartReservationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ListReservationRequest extends FormRequest
@@ -25,8 +22,10 @@ class ListReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'filter.start_time' => ['sometimes', 'date_format:Y-m-d H:i'],
-            'filter.end_time' => ['required_with:start_time', 'date_format:Y-m-d H:i', 'after:start_time']
+            'filter.reservation_time.start_time' => ['sometimes', 'date_format:Y-m-d H:i'],
+            'filter.reservation_time.end_time' => ['sometimes', 'date_format:Y-m-d H:i', 'after:start_time'],
+            'filter.reservation_time.opposite' => ['bool'],
+            'filter.status' => ['array']
         ];
     }
 }
