@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Role;
+use App\Models\User;
 use App\Repositiories\Role\RoleRepositoryInterface;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -12,15 +12,6 @@ class RoleService
         private RoleRepositoryInterface $roleRepository
     ) {
     }
-
-    //TODO i dont think that making a new role is a good idea
-//    public function create(array $data)
-//    {
-//        if (Role::query()->where('slug', $data['slug'])->exists())
-//            throw new HttpException(409, 'Already exists');
-//
-//        $this->roleRepository->create($data);
-//    }
 
     public function find(int $id)
     {
@@ -32,11 +23,17 @@ class RoleService
         return $this->roleRepository->list();
     }
 
-    public function delete(int $id)
+    public function attachRoles(User $fromUser, User $toUser, array $roles)
     {
-        if (!$this->roleRepository->recordExists($id))
-            throw new HttpException(409, 'Doesn\'t exist');
+        if ($toUser->hasRole($roles)) return;
 
-        $this->roleRepository->delete($id);
+        $roles = $this->roleRepository->rolesBySlug($roles);
+
+        foreach ($roles as $role) {
+            if ($fromUser->mainPriority() > $role->slug->rolePriority())
+                throw new HttpException(409, 'Forbidden to attach this role: ' . $role);
+        }
+
+        $toUser->roles()->attach($roles);
     }
 }

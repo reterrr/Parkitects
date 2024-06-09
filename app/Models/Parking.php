@@ -10,7 +10,7 @@ class Parking extends Model
 {
     use HasFactory;
 
-    public function parkingPlace(): HasMany
+    public function parkingPlaces(): HasMany
     {
         return $this->hasMany(ParkingPlace::class);
     }

@@ -27,6 +27,6 @@ class ReservationController extends Controller
 
     public function update(ReservationService $service, UpdateReservationRequest $request): void
     {
-       $service->update($request->reservation, $request->validated());
+        $service->update($request->reservation, $request->validated());
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Mockery\Exception;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RoleRepository implements RoleRepositoryInterface
 {
@@ -46,5 +47,16 @@ class RoleRepository implements RoleRepositoryInterface
     public function recordExists(int $id): bool
     {
         return Role::query()->where('id', $id)->exists();
+    }
+
+    public function rolesBySlug(array $slug)
+    {
+        try {
+            $role = Role::query()->whereIn('slug', $slug)->get();
+        } catch (\Exception $exception) {
+            throw new HttpException(404, 'No such role with provided slug!');
+        }
+
+        return $role;
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Repositiories\Parking\ParkingRepository;
+use App\Repositiories\Parking\ParkingRepositoryInterface;
 use App\Repositiories\ParkingPlace\ParkingPlaceRepository;
 use App\Repositiories\ParkingPlace\ParkingPlaceRepositoryInterface;
 use App\Repositiories\Permission\PermissionRepository;
@@ -26,6 +28,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(PermissionRepositoryInterface::class, PermissionRepository::class);
         $this->app->bind(ParkingPlaceRepositoryInterface::class, ParkingPlaceRepository::class);
+        $this->app->bind(ParkingRepositoryInterface::class, ParkingRepository::class);
     }
 
     /**

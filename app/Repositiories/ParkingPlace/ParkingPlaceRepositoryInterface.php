@@ -2,9 +2,9 @@
 
 namespace App\Repositiories\ParkingPlace;
 
-use App\Repositiories\RepositoryInterface;
 
-interface ParkingPlaceRepositoryInterface extends RepositoryInterface
+interface ParkingPlaceRepositoryInterface
 {
-
+    public function freePlaces(int $parkingId, string $startTime, string $endTime);
+    public function find(int $id);
 }

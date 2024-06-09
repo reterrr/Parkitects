@@ -3,36 +3,29 @@
 namespace App\Repositiories\ParkingPlace;
 
 use App\Models\ParkingPlace;
-use Spatie\QueryBuilder\AllowedFilter;
-use Spatie\QueryBuilder\QueryBuilder;
+use Illuminate\Support\Facades\DB;
 
 class ParkingPlaceRepository implements ParkingPlaceRepositoryInterface
 {
-    public function list()
-    {
-        return QueryBuilder::for(ParkingPlace::class)
-            ->allowedFilters([
-                AllowedFilter::callback('')
-            ]);
-    }
-
     public function find(int $id)
     {
         ParkingPlace::query()->where('id', $id)->first();
     }
 
-    public function delete(int $id): void
+    public function freePlaces(int $parkingId, string $startTime, string $endTime)
     {
-        ParkingPlace::query()->where('id', $id)->delete();
-    }
-
-    public function create(array $data): void
-    {
-        ParkingPlace::create();
-    }
-
-    public function update(int $id, array $data): void
-    {
-        ParkingPlace::query()->where('id', $id)->update($data);
+        return  DB::table('parking_places')
+            ->join('parkings', 'parking_places.parking_id', '=', 'parkings.id')
+            ->leftJoin('reservations', function ($join) use ($startTime, $endTime) {
+                $join->on('reservations.parking_place_id', '=', 'parking_places.id')
+                    ->where(function ($query) use ($startTime, $endTime) {
+                        $query->where('reservations.start_time', '<', $endTime)
+                            ->where('reservations.end_time', '>', $startTime);
+                    });
+            })
+            ->where('parkings.id', $parkingId)
+            ->whereNull('reservations.id')
+            ->select('parking_places.id')
+            ->get();
     }
 }

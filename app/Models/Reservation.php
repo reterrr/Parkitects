@@ -6,6 +6,7 @@ use App\ReservationStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Reservation extends Model
@@ -24,9 +25,9 @@ class Reservation extends Model
         'status' => ReservationStatus::class
     ];
 
-    public function parkingPlace(): BelongsTo
+    public function parkingPlace(): HasOne
     {
-        return $this->belongsTo(ParkingPlace::class);
+        return $this->hasOne(ParkingPlace::class);
     }
 
     public function user(): BelongsTo

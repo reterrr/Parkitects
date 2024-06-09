@@ -13,19 +13,9 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $createRole = new Permission();
-        $createRole->name = 'add role';
-        $createRole->slug = 'roles.create';
+        $createRole->name = 'give role';
+        $createRole->slug = 'roles.give';
         $createRole->save();
-
-        $deleteRole = new Permission();
-        $deleteRole->name = 'delete role';
-        $deleteRole->slug = 'roles.delete';
-        $deleteRole->save();
-
-        $updateRole = new Permission();
-        $updateRole->name = 'update role';
-        $updateRole->slug = 'roles.update';
-        $updateRole->save();
 
         $findRole = new Permission();
         $findRole->name = 'find role';
@@ -36,11 +26,6 @@ class PermissionSeeder extends Seeder
         $givePermission->name = 'give permission';
         $givePermission->slug = 'permissions.give';
         $givePermission->save();
-
-        $deletePermission = new Permission();
-        $deletePermission->name = 'delete permission';
-        $deletePermission->slug = 'permissions.delete';
-        $deletePermission->save();
 
         $detachPermission = new Permission();
         $detachPermission->name = 'detach permission';

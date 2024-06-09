@@ -26,11 +26,11 @@ class ReservationRepository implements ReservationRepositoryInterface
                             return $query->where('start_time', '>', $endTime);
                         });
                 }),
-                AllowedFilter::callback('parking_place', function (Builder $query, array $value): Builder {
-                    return $query->whereIn('parking_place_id', $value);
+                AllowedFilter::callback('parking_place', function (Builder $query, array|string $value): Builder {
+                    return $query->whereIn('parking_place_id', (array)$value);
                 }),
-                AllowedFilter::callback('status', function (Builder $query, array $value): Builder {
-                    return $query->whereIn('status', array_map([ReservationStatus::class, 'from'], $value));
+                AllowedFilter::callback('status', function (Builder $query, array|string $value): Builder {
+                    return $query->whereIn('status', array_map([ReservationStatus::class, 'from'], (array)$value));
                 })
             ]);
     }
@@ -61,18 +61,22 @@ class ReservationRepository implements ReservationRepositoryInterface
         Reservation::query()->where('id', $id)->update($data);
     }
 
-    public function isCreateTimePossible(string $startTime, string $endTime): bool
+    public function isCreateTimePossible(int $parkingPlaceId, string $startTime, string $endTime): bool
     {
-        return !Reservation::query()->where(function (Builder $query) use ($endTime): Builder {
-            return $query->where('start_time', '<=', $endTime)
-                ->where('end_time', '>=', $endTime);
-        })->orWhere(function (Builder $query) use ($startTime): Builder {
-            return $query->where('start_time', '<=', $startTime)
-                ->where('end_time', '>=', $startTime);
-        })->orWhere(function (Builder $query) use ($startTime, $endTime): Builder {
-            return $query->where('start_time', '>=', $startTime)
-                ->where('end_time', '<=', $endTime);
-        })->exists();
+        return !Reservation::query()
+            ->where('parking_place_id', $parkingPlaceId)
+            ->where(function (Builder $query) use ($startTime, $endTime) {
+                return $query->where(function (Builder $query) use ($endTime): Builder {
+                    return $query->where('start_time', '<=', $endTime)
+                        ->where('end_time', '>=', $endTime);
+                })->orWhere(function (Builder $query) use ($startTime): Builder {
+                    return $query->where('start_time', '<=', $startTime)
+                        ->where('end_time', '>=', $startTime);
+                })->orWhere(function (Builder $query) use ($startTime, $endTime): Builder {
+                    return $query->where('start_time', '>=', $startTime)
+                        ->where('end_time', '<=', $endTime);
+                });
+            })->exists();
     }
 
     public function cancel(int $id): void
@@ -84,12 +88,12 @@ class ReservationRepository implements ReservationRepositoryInterface
         $this->delete($id);
     }
 
-    public function listForUser(User $user)
+    public function listForUser(User $user): QueryBuilder
     {
         return $this->list()->where('user_id', $user->id);
     }
 
-    public function listForAdmin()
+    public function listForAdmin(): QueryBuilder
     {
         return $this->list()
             ->allowedFilters([
@@ -104,9 +108,13 @@ class ReservationRepository implements ReservationRepositoryInterface
             ]);
     }
 
-    public function isUpdateTimePossible(int $id, string $startTime, string $endTime): bool
+    public function isUpdateTimePossible(int $reservationId, string $startTime, string $endTime): bool
     {
-        return !Reservation::query()->where('id', '<>', $id)
+        $parkingPlaceId = Reservation::query()->find($reservationId)->parking_place_id;
+
+        return !Reservation::query()
+            ->where('parking_place_id', $parkingPlaceId)
+            ->where('id', '<>', $reservationId)
             ->where(function (Builder $query) use ($endTime): Builder {
                 return $query->where('start_time', '<=', $endTime)
                     ->where('end_time', '>=', $endTime);

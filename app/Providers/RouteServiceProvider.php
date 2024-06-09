@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Exceptions\ResourceNotFoundException;
+use App\Repositiories\Parking\ParkingRepositoryInterface;
 use App\Repositiories\ParkingPlace\ParkingPlaceRepositoryInterface;
 use App\Repositiories\Reservation\ReservationRepositoryInterface;
 use App\Repositiories\Role\RoleRepositoryInterface;
@@ -39,10 +40,11 @@ class RouteServiceProvider extends ServiceProvider
         $reservationRepository = app(ReservationRepositoryInterface::class);
         $parkingPlaceRepository = app(ParkingPlaceRepositoryInterface::class);
         $roleRepository = app(RoleRepositoryInterface::class);
+        $parkingRepository = app(ParkingRepositoryInterface::class);
 
-        $this->routes(function () use ($userRepository, $reservationRepository, $parkingPlaceRepository, $roleRepository) {
+        $this->routes(function () use ($userRepository, $reservationRepository, $parkingPlaceRepository, $roleRepository, $parkingRepository) {
             $this->registerRoutes();
-            $this->registerBindings($userRepository, $reservationRepository, $parkingPlaceRepository, $roleRepository);
+            $this->registerBindings($userRepository, $reservationRepository, $parkingPlaceRepository, $roleRepository, $parkingRepository);
 
             Route::middleware('api')
                 ->prefix('api')
@@ -60,11 +62,12 @@ class RouteServiceProvider extends ServiceProvider
         $loader->register();
     }
 
-    private function registerBindings(UserRepositoryInterface $userRepository, ReservationRepositoryInterface $reservationRepository, ParkingPlaceRepositoryInterface $parkingPlaceRepository, RoleRepositoryInterface $roleRepository): void
+    private function registerBindings(UserRepositoryInterface $userRepository, ReservationRepositoryInterface $reservationRepository, ParkingPlaceRepositoryInterface $parkingPlaceRepository, RoleRepositoryInterface $roleRepository, ParkingRepositoryInterface $parkingRepository): void
     {
         Route::bind('user', fn ($id) => $userRepository->find($id) ?? throw new ResourceNotFoundException(message: 'User not found'));
         Route::bind('reservation', fn ($id) => $reservationRepository->find($id) ?? throw new ResourceNotFoundException);
         Route::bind('parkingPlace', fn ($id) => $parkingPlaceRepository->find($id) ?? throw new ResourceNotFoundException);
         Route::bind('role', fn ($id) => $roleRepository->find($id) ?? throw new ResourceNotFoundException);
+        Route::bind('parking', fn ($id) => $parkingRepository->find($id) ?? throw new ResourceNotFoundException);
     }
 }

@@ -16,7 +16,7 @@ class NotConflictingUpdateReservationRule implements ValidReservationRule
 
     public function validate(array $data): void
     {
-        if (!$this->repository->isUpdateTimePossible($data['id'], $data['start_time'], $data['end_time']))
+        if (!$this->repository->isUpdateTimePossible($data['parking_id'], $data['parking_place_id'], $data['start_time'], $data['end_time']))
             throw new HttpException(409, 'Conflicting with other reservations');
     }
 }
