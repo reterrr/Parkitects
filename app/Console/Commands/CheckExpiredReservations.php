@@ -23,14 +23,11 @@ class CheckExpiredReservations extends Command
      */
     protected $description = 'Check whether there are no expired reservations';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function __invoke(): void
     {
         Reservation::query()
             ->where('status', ReservationStatus::CURRENT->value)
-            ->where('end_time', '<=', Carbon::now())
+            ->where('end_time', '<=', Carbon::now()->timezone('Europe/Warsaw')->format('Y-m-d H:i'))
             ->update(['status' => ReservationStatus::EXPIRED->value]);
     }
 }

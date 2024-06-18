@@ -11,12 +11,13 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         CheckExpiredReservations::class
     ];
+
     /**
      * Define the application's command schedule.
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('')->daily();
+        $schedule->call(new CheckExpiredReservations)->everyMinute();
     }
 
     /**

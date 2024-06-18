@@ -14,7 +14,7 @@ class UserService
     ) {
     }
 
-    public function list(): Collection
+    public function list()
     {
         return $this->userRepository->list();
     }
@@ -26,7 +26,7 @@ class UserService
 
     public function delete(User $user): void
     {
-        if ($user->hasRole('super-admin'))
+        if ($user->hasRole(['super-admin']))
             throw new SuperAdminDelete();
 
         $user->delete();

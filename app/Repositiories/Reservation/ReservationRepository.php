@@ -45,15 +45,17 @@ class ReservationRepository implements ReservationRepositoryInterface
         Reservation::query()->where('id', $id)->delete();
     }
 
-    public function create(array $data): void
+    public function create(array $data): Reservation
     {
-        Reservation::query()->create([
+        $reservation = Reservation::query()->create([
             'user_id' => $data['user_id'],
             'parking_place_id' => $data['parking_place_id'],
             'status' => ReservationStatus::CURRENT->value,
             'start_time' => $data['start_time'],
             'end_time' => $data['end_time']
         ]);
+
+        return $reservation;
     }
 
     public function update(int $id, array $data): void

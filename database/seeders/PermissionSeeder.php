@@ -17,6 +17,11 @@ class PermissionSeeder extends Seeder
         $createRole->slug = 'roles.give';
         $createRole->save();
 
+        $detachRole = new Permission();
+        $detachRole->name = 'detach role';
+        $detachRole->slug = 'roles.detach';
+        $detachRole->save();
+
         $findRole = new Permission();
         $findRole->name = 'find role';
         $findRole->slug = 'roles.find';

@@ -11,3 +11,4 @@ Route::controller(RoleController::class)->prefix('roles')->group(function () {
 });
 
 Route::post('users/{user}/roles', [RoleController::class, 'attachRoles']);
+Route::delete('users/{user}/roles', [RoleController::class, 'detachRoles']);

@@ -11,7 +11,7 @@ class GetUsersRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->hasPermissionsTo('users.get');
+        return $this->user()->hasPermissionTo('users.get');
     }
 
     /**

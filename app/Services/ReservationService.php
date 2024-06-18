@@ -46,9 +46,11 @@ class ReservationService
 
         $data['user_id'] = $user->id;
 
-        $this->repository->create($data);
+        $reservation = $this->repository->create($data);
 
         //TODO: maybe add some event for sending invoice to user email
+
+        event();
     }
 
     private function makeReservationRules(): array

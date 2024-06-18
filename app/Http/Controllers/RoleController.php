@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AttachUserRoleRequest;
+use App\Http\Requests\DetachUserRoleRequest;
 use App\Http\Requests\FindRoleRequest;
 use App\Models\Role;
 use App\Services\RoleService;
@@ -19,8 +20,13 @@ class RoleController extends Controller
         return $request->role;
     }
 
-    public function attachRoles(RoleService $service, AttachUserRoleRequest $request)
+    public function attachRoles(RoleService $service, AttachUserRoleRequest $request): void
     {
-        $service->attachRoles($request->user(), $request->user, $request->validated());
+        $service->attachRoles($request->user(), $request->user, $request->validated()['roles']);
+    }
+
+    public function detachRoles(RoleService $service, DetachUserRoleRequest $request): void
+    {
+        $service->detachRoles($request->user(), $request->user, $request->validated()['roles']);
     }
 }

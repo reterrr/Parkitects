@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AttachUserPermissionsRequest extends FormRequest
+class DetachUserRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -12,7 +12,7 @@ class AttachUserPermissionsRequest extends FormRequest
     public function authorize(): bool
     {
         return $this->user()->hasPermissionTo('permissions.give')
-            && $this->user()->mainPriority() < $this->user->mainPriority();
+        && $this->user()->mainPriority() < $this->user->mainPriority();
     }
 
     /**
@@ -23,8 +23,8 @@ class AttachUserPermissionsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'permissions' => ['array'],
-            'permissions.*' => ['string']
+            'roles' => ['required', 'array'],
+            'roles.*' => ['string']
         ];
     }
 }

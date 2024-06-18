@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function list(UserService $service, GetUsersRequest $request)
     {
-        return $service->list();
+        return $service->list()->get();
     }
 
     public function update(UserService $service, UpdateUserRequest $request)
