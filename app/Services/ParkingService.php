@@ -15,7 +15,7 @@ class ParkingService
 
     public function list()
     {
-        return $this->parkingRepository->list();
+        return $this->parkingRepository->list()->get();
     }
 
     public function checkFreePlaces(array $data)
