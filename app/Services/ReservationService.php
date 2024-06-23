@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\CreateReservationTimeRuleChecker;
+use App\Events\ReservationCreated;
 use App\MinReservationPeriod;
 use App\Models\Reservation;
 use App\Models\User;
@@ -49,6 +50,7 @@ class ReservationService
         $reservation = $this->repository->create($data);
 
         //TODO: maybe add some event for sending invoice to user email
+        event(new ReservationCreated($reservation));
     }
 
     private function makeReservationRules(): array

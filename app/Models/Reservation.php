@@ -25,9 +25,9 @@ class Reservation extends Model
         'status' => ReservationStatus::class
     ];
 
-    public function parkingPlace(): HasOne
+    public function parkingPlace(): BelongsTo
     {
-        return $this->hasOne(ParkingPlace::class);
+        return $this->belongsTo(ParkingPlace::class);
     }
 
     public function user(): BelongsTo

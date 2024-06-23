@@ -3,6 +3,9 @@
 namespace App\Listeners;
 
 use App\Events\ReservationCreated;
+use App\Mail\ReservationDetailsMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class SendEmailReservationDetails
 {
@@ -19,6 +22,6 @@ class SendEmailReservationDetails
      */
     public function handle(ReservationCreated $event): void
     {
-        
+        Mail::send(new ReservationDetailsMail($event->reservation));
     }
 }

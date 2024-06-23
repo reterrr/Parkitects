@@ -14,7 +14,7 @@ class ParkingPlace extends Model
 
     public function reservations(): BelongsToMany
     {
-        return $this->belongsToMany(Reservation::class, 'reservations');
+        return $this->belongsToMany(Reservation::class);
     }
 
     public function parking(): BelongsTo

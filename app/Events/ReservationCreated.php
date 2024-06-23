@@ -15,8 +15,9 @@ class ReservationCreated
     /**
      * Create a new event instance.
      */
-    public function __construct(public Reservation $reservation)
-    {
+    public function __construct(
+        public Reservation $reservation
+    ) {
         //
     }
 
