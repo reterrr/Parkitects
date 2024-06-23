@@ -12,6 +12,7 @@ class ParkingResource extends JsonResource
      * @var Parking
      */
     public $resource;
+    
     /**
      * Transform the resource into an array.
      *

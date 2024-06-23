@@ -8,4 +8,5 @@ Route::controller(ParkingPlaceController::class)->prefix('parking-places')->grou
     Route::prefix('/{parking-place}')->group(function () {
         Route::get('', 'find');
     });
+    Route::get('/{parking_place_id}/parking', 'getParkingByPlace');  // Nowa trasa
 });

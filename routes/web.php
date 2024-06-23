@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\GoogleController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MailController;
 
+Route::get('/send-mail', [MailController::class, 'sendMail']);
 /*
 |--------------------------------------------------------------------------
 | Web Routes

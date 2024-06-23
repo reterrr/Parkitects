@@ -17,6 +17,7 @@ return new class extends Migration {
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
+            $table->integer('pillar'); 
 
             $table->timestamps();
         });

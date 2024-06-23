@@ -34,7 +34,7 @@ class ReservationService
             throw new HttpException(409, 'Reservation is already cancelled or expired');
 
         $reservation->update(['status' => ReservationStatus::CANCELED->value]);
-        $reservation->delete();
+        $reservation->forceDelete();
     }
 
     public function create(User $user, array $data): void

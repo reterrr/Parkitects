@@ -14,9 +14,11 @@ class ParkingPlaceSeeder extends Seeder
     public function run(): void
     {
         Parking::all()->each(function (Parking $parking) {
-            for ($i = 0; $i < 50; $i++) {
+            $numberOfPlaces = rand(30, 50); // Losowa liczba od 30 do 50
+            for ($i = 0; $i < $numberOfPlaces; $i++) {
                 ParkingPlace::query()->create([
                     'parking_id' => $parking->id,
+                    'pillar' => rand(1, 4), // Dodane pole pillar z losową wartością
                 ]);
             }
         });

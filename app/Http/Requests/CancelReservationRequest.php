@@ -11,8 +11,8 @@ class CancelReservationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->id == $this->id ||
-            $this->user()->hasPermission('reservations.cancel');
+        $reservation = $this->route('reservation');
+        return $this->user()->id == $reservation->user_id;
     }
 
     /**

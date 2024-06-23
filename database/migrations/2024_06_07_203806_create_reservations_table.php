@@ -27,8 +27,8 @@ return new class extends Migration {
 
             $table->string('status');
 
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

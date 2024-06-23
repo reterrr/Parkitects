@@ -9,7 +9,10 @@ class ParkingPlaceRepository implements ParkingPlaceRepositoryInterface
 {
     public function find(int $id)
     {
-        ParkingPlace::query()->where('id', $id)->first();
+        ParkingPlace::query()
+        ->select('id', 'pillar')
+        ->where('id', $id)
+        ->first();
     }
 
     public function freePlaces(int $parkingId, string $startTime, string $endTime)
@@ -25,7 +28,7 @@ class ParkingPlaceRepository implements ParkingPlaceRepositoryInterface
             })
             ->where('parkings.id', $parkingId)
             ->whereNull('reservations.id')
-            ->select('parking_places.id')
+            ->select('parking_places.id', 'parking_places.pillar') 
             ->get();
     }
 }
